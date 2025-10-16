@@ -1,17 +1,33 @@
+
+# função auxiliares
 def validar_erro(e):
-    if isinstance(e, KeyError):
-        return f"KeyError: A coluna ou chave '{e}' não foi encontrada."
-    elif isinstance(e, PermissionError):
-        return "PermissionError: O arquivo está sendo usado ou você não tem permissão para acessá-lo. Por favor, feche o arquivo."
-    elif isinstance(e, TypeError):
+    if isinstance(e, TypeError):
         return f"TypeError: Erro de tipo. Verifique se os dados são do tipo correto. Mensagem original: {e}"
     elif isinstance(e, ValueError):
-        return f"ValueError: Erro de valor. Mensagem original: {e}"
+        return f"ValueError: Erro de valor. Verifique se os dados são do tipo correto.. Mensagem original: {e}"
     else:
         return f"Ocorreu um erro inesperado: {e}"
 
+def obter_valor(prompt, tipo_dado):
+    while True:
+        try:
+            valor_str = input(prompt)
+            
+            valor_str_limpo = valor_str.replace(".", "")
+            valor_str_limpo = valor_str_limpo.replace(",", ".")
+            
+            if tipo_dado == int:
+                return int(float(valor_str_limpo))
+            elif tipo_dado == float:
+                return float(valor_str_limpo)
+            else:
+                return valor_str
+                
+        except Exception as e:
+            error = validar_erro(e)
+            print(f"AUXILIAR OBTER DADOS: {error}\n")
 
-
+# função principal
 def main():
     base_dados = [
         {"COD": 80000, "DESCRICAO": "SANDALIA MASC 45/6", "FATOR": 12, "EMBALAGEM": "UN/001/UN", "ENDERECO": "30-10-1-101", "PRECO": 39.59},
@@ -33,14 +49,23 @@ def main():
             escolha = int(input("\nDigite o numero da opção desejada: \n"))
 
             if escolha == 1:
-                print("\nFavor informar os campos abaixo\n")
-                desc = input("descrição: ")
-                fator = int(input("fator de converção: "))
-                emb = input("Embalagem: ")
-                end = input("Endereço:")
-                vl = float(input("valor do produto:"))
-
-                cadastrar(desc, fator, emb, end, vl)   
+                try:
+                    print("#"*120)
+                    print("\nFavor informar os campos abaixo\n")
+                    desc = obter_valor("descrição: ", str)
+                    fator = obter_valor("fator de converção: ", int)
+                    emb = obter_valor("Embalagem: ", str)
+                    end = obter_valor("Endereço:", str)
+                    vl = obter_valor("valor do produto (000,00):", float)
+                    
+                    if None in [desc, fator, emb, end, vl]:
+                        print("\nCadastro cancelado devido a uma entrada inválida.")
+                    else:
+                        cadastrar(desc, fator, emb, end, vl) 
+                except Exception as e:
+                    error = validar_erro(e)
+                    print(f"menu-1: {error}\n")
+                    continue
             elif escolha == 2:
                 listar()   
             elif escolha == 0:
@@ -56,33 +81,25 @@ def main():
 
 
     def cadastrar(desc, fator, emb, end, vl):
-        try:
-            cod_list = []
-            count_list = len(cod_list)
+        end_existe = [produto['ENDERECO'] for produto in base_dados]
+        if end in end_existe:
+            print(f"ERRO: Endereço ja cadastrado.")
+            return
+        
+        cod_existe = [produto['COD'] for produto in base_dados]
+        if cod_existe:
+            cod = max(cod_existe) + 1
+        else:
+            cod = 80000
             
-            for produto in base_dados:
-                if count_list != 0:
-                    print(f"lista cheia {cod_list}")
-                else:
-                    cod_list.append(produto["COD"])
-                maior_cod = max(cod_list)
-                cod = maior_cod + 1
-
-            print("aqui",cod_list)
-            print("aqui",cod)
-
-            novo_registro = {
-                "COD": cod,
-                "DESCRICAO": desc,
-                "FATOR": fator,
-                "EMBALAGEM": emb,
-                "ENDERECO": end,
-                "PRECO": vl
-            }
-        except Exception as e:
-            error = validar_erro(e)
-            print(f"cadastro: {error}\n")
-            
+        novo_registro = {
+            "COD": cod,
+            "DESCRICAO": desc,
+            "FATOR": fator,
+            "EMBALAGEM": emb,
+            "ENDERECO": end,
+            "PRECO": vl
+        }    
         return base_dados.append(novo_registro)
     def listar():
         pass
