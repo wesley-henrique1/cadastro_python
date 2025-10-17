@@ -26,7 +26,7 @@ def obter_valor(prompt, tipo_dado):
         except Exception as e:
             error = validar_erro(e)
             print(f"AUXILIAR OBTER DADOS: {error}\n")
-
+            
 # função principal
 def main():
     base_dados = [
