@@ -34,7 +34,6 @@ def obter_valor(prompt, tipo_dado):
         except Exception as e:
             error = validar_erro(e)
             print(f"AUXILIAR OBTER DADOS: {error}\n")
-
 def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     end = str(rua) + "-" + str(pr) + "-" + str(nvl) + "-" + str(apto)
     end_existe = [produto['ENDERECO'] for produto in base_dados]
@@ -64,7 +63,12 @@ def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     return base_dados.append(novo_registro)
 
 def listar():
-    pass
+    if not base_dados:
+        print("sem produtos cadastrados!!")
+        return
+    
+    print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'ENDEREÇO':<15} {'PREÇO':<10}")
+    print("-" * 75)
 def buscar():
     pass
 def remover():
@@ -119,9 +123,11 @@ def main():
 
             elif escolha == 2:
                 listar()   
+
             elif escolha == 0:
                 print("\n\nObrigado por utilizar o sistema")
                 break
+
             else:
                 print("Numero invalido valor digitar o numero correspodente a opção desejada") 
         except Exception as e:
@@ -129,7 +135,6 @@ def main():
             print(f"escolhas: {e}")
             break
             
-
 
 if __name__ == "__main__":
     main()  

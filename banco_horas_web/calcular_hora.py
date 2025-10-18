@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 def app():
     hora = datetime.strptime(input("Digite a hora inicial: "), "%H:%M")
-    print("--- Seleção de Horário ---")
+    print("\n--- Seleção de Horário ---")
     intervalo = int(input("1 para 1:30.\n2 para 1:00: \n"))
     atual = datetime.now()
     while True:
