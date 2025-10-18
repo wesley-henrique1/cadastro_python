@@ -1,8 +1,8 @@
 # variavel para armazenar os dados de exemplo
 base_dados = [
-    {"COD": 80000, "DESCRICAO": "SANDALIA MASC 45/6", "FATOR": 12, "EMBALAGEM": "UN/001/UN", "ENDERECO": "30-10-1-101", "PRECO": 39.59},
-    {"COD": 80002, "DESCRICAO": "CHOC TALENTO DARCK WHITE", "FATOR": 6, "EMBALAGEM": "DP/012/UN", "ENDERECO": "11-50-1-202", "PRECO": 56.99},
-    {"COD": 80001, "DESCRICAO": "TV AOC 32", "FATOR": 1, "EMBALAGEM": "UN/001/UN", "ENDERECO": "01-64-1-102", "PRECO": 1578.59}
+    {"COD": 8000, "DESCRICAO": "SANDALIA MASC 45/6", "FATOR": 12, "EMBALAGEM": "UN/001/UN", "ENDERECO": "30-10-1-101", "PRECO": 39.59},
+    {"COD": 8001, "DESCRICAO": "CHOC TALENTO DARCK WHITE", "FATOR": 6, "EMBALAGEM": "DP/012/UN", "ENDERECO": "11-50-1-202", "PRECO": 56.99},
+    {"COD": 8002, "DESCRICAO": "TV AOC 32", "FATOR": 1, "EMBALAGEM": "UN/001/UN", "ENDERECO": "01-64-1-102", "PRECO": 1578.59}
     ]
 
 
@@ -28,6 +28,7 @@ def obter_valor(prompt, tipo_dado):
             elif tipo_dado == float:
                 return float(valor_str_limpo)
             else:
+                valor_str = valor_str.upper()
                 return valor_str
                 
         except Exception as e:
@@ -38,14 +39,14 @@ def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     end = str(rua) + "-" + str(pr) + "-" + str(nvl) + "-" + str(apto)
     end_existe = [produto['ENDERECO'] for produto in base_dados]
     if end in end_existe:
-        print(f"ERRO: Endereço ja cadastrado.")
+        print(f"\nERRO: Endereço ja cadastrado.")
         return
     
     cod_existe = [produto['COD'] for produto in base_dados]
     if cod_existe:
         cod = max(cod_existe) + 1
     else:
-        cod = 80000
+        cod = 8000
         
     novo_registro = {
         "COD": cod,
@@ -59,7 +60,7 @@ def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     print("produto cadastrado:")
     print(f"{cod}-{desc}")
     print(f"Endereço: {end}")
-    print(f"fator de converção: {fator}, embalagem: {emb}, preço pra venda: {vl}, ") 
+    print(f"fator de converção: {fator}, embalagem: {emb}, preço pra venda: R$ {vl:.2f}, ") 
     return base_dados.append(novo_registro)
 
 def listar():
@@ -90,8 +91,8 @@ def main():
     print("=" *60 + "sistema" + "=" *60)
     print("\nBem vindo ao sistema\n")
 
-    escolha = menu()
     while True:
+        escolha = menu()
         try:
 
             if escolha == 1:
@@ -112,7 +113,6 @@ def main():
                         
                     else:
                         cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl) 
-
                 except Exception as e:
                     error = validar_erro(e)
                     print(f"menu-1: {error}\n")
@@ -123,13 +123,12 @@ def main():
                 print("\n\nObrigado por utilizar o sistema")
                 break
             else:
-                print("Numero invalido valor digitar o numero correspodente a opção desejada")          
+                print("Numero invalido valor digitar o numero correspodente a opção desejada") 
         except Exception as e:
             error = validar_erro(e)
             print(f"escolhas: {e}")
+            break
             
-
-
 
 
 if __name__ == "__main__":
