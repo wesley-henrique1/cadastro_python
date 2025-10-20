@@ -32,18 +32,7 @@ def obter_valor(prompt, tipo_dado):
         except Exception as e:
             error = validar_erro(e)
             print(f"AUXILIAR OBTER DADOS: {error}\n")
-def menu():
-    print("\nMENU")
-    print("1 - cadastro")
-    print("2 - lista")
-    print("3 - Buscar")
-    print("0 - sair")
-    try:
-        escolha = int(input("Digite o numero da opção desejada: \n"))
-        return escolha
-    except Exception as e:
-        error = validar_erro(e)
-        print(f"menu: {error}")
+
 def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     end = str(rua) + "-" + str(pr) + "-" + str(nvl) + "-" + str(apto)
     end_existe = [produto['ENDERECO'] for produto in base_dados]
@@ -121,10 +110,33 @@ def buscar(procx):
     except Exception as e:
         error = validar_erro(e)
         print(f"menu: {error}")
+def remover(lista, produto):
+    for i, dic in enumerate(lista):
+        if dic['COD'] == produto:
+            lista.pop(i)
+            print("\nProduto removido com sucesso!")
+            listar()
+            return  lista
+        else:
+            print("\nProduto não encotrado...")
+            listar()
+
+def menu():
+    print("\nMENU")
+    print("1 - cadastro")
+    print("2 - lista")
+    print("3 - Buscar")
+    print("4 - Remover")
+    print("0 - sair")
+    try:
+        escolha = int(input("Digite o numero da opção desejada: \n"))
+        print("-" * 60)
+        return escolha
+    except Exception as e:
+        error = validar_erro(e)
+        print(f"menu: {error}")
 
 
-def remover():
-    pass
 def atualizar():
     pass
 
@@ -159,14 +171,29 @@ def main():
                     print(f"menu-1: {error}\n")
 
             elif escolha == 2:
+                print("\nlista de produtos cadastrados\n")
+                print("-" *120)
                 listar()   
 
             elif escolha == 3:
-                procx = int(input("Digite codigo do produto: "))
+                print("\nConsulta de produtos")
+                print("-" * 120)
+                procx = int(input("\nDigite codigo do produto: \n"))
                 buscar(procx)
 
+            elif escolha == 4:
+                print("\nRemoção de produto")
+                print("-" * 60)
+                prod = int(input("\nfavor digite o codigo do produto para remoção:\n"))
+                remover(lista= base_dados, produto= prod)
+
+
             elif escolha == 0:
-                print("\n\nObrigado por utilizar o sistema")
+                print('\n')
+                print("-" * 60)
+                print("Obrigado por utilizar o sistema")
+                print("-" * 60)
+                print('\n')
                 break
 
             else:
