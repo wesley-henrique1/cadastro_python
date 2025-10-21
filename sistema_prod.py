@@ -8,9 +8,9 @@ base_dados = [
 # função auxiliares
 def validar_erro(e):
     if isinstance(e, TypeError):
-        return f"TypeError: Erro de tipo. Verifique se os dados são do tipo correto. Mensagem original: {e}"
+        return f"TypeError: Operação inválida. Tentativa de usar tipos de dados incompatíveis. Mensagem original: {e}"
     elif isinstance(e, ValueError):
-        return f"ValueError: Erro de valor. Verifique se os dados são do tipo correto.. Mensagem original: {e}"
+        return f"ValueError: Dado inválido. O valor não pode ser convertido (Ex: vírgula em número ou data errada). Mensagem original: {e}"
     else:
         return f"Ocorreu um erro inesperado: {e}"
 def obter_valor(prompt, tipo_dado):
@@ -32,7 +32,6 @@ def obter_valor(prompt, tipo_dado):
         except Exception as e:
             error = validar_erro(e)
             print(f"AUXILIAR OBTER DADOS: {error}\n")
-
 def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     end = str(rua) + "-" + str(pr) + "-" + str(nvl) + "-" + str(apto)
     end_existe = [produto['ENDERECO'] for produto in base_dados]
@@ -110,7 +109,7 @@ def buscar(procx):
     except Exception as e:
         error = validar_erro(e)
         print(f"menu: {error}")
-def remover(lista, produto):
+def remover(lista, produto,):
     for i, dic in enumerate(lista):
         if dic['COD'] == produto:
             lista.pop(i)
@@ -137,7 +136,27 @@ def menu():
         print(f"menu: {error}")
 
 
-def atualizar():
+def atualizar(procx,escolha):
+    prod_encotrado = False
+
+    for produto in base_dados:
+        if procx == produto['COD']:
+            prod_encotrado = True
+            buscar(procx)
+            
+            if escolha == 1:
+                produto['DESCRICAO'] = obter_valor("descrição: ", str)
+            elif escolha == 2:
+                pass
+            elif escolha == 3:
+                pass
+            elif escolha == 4:
+                pass
+            elif escolha == 5: 
+                pass
+
+    if not prod_encotrado:
+        print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
     pass
 
 
@@ -152,10 +171,11 @@ def main():
             if escolha == 1:
                 try:
                     print("#"*120)
+                    print("cadastro de produtos")
                     print("\nFavor informar os campos abaixo\n")
                     desc = obter_valor("descrição: ", str)
                     fator = obter_valor("fator de converção: ", int)
-                    emb = obter_valor("Embalagem: ", str)
+                    emb = obter_valor("Embalagem ex: CX/024/PT, UN/001/UN: ", str)
                     rua = obter_valor("Rua: ", int)
                     pr = obter_valor("Predio: ", int)
                     nvl = obter_valor("Nivel: ", int)
@@ -187,7 +207,14 @@ def main():
                 prod = int(input("\nfavor digite o codigo do produto para remoção:\n"))
                 remover(lista= base_dados, produto= prod)
 
-
+            elif escolha == 5:
+                print("\nAlterar cadastros")
+                print("1 - descrição.\n" \
+                        "2 - FATOR.\n" \
+                        "3 - EMBALAGEM.\n" \
+                        "4 - PREÇO.\N" \
+                        "5 - TODOS.")
+                escolha = int(input("Digite uma das opção acima para iniciar a alteração"))
             elif escolha == 0:
                 print('\n')
                 print("-" * 60)
@@ -197,7 +224,7 @@ def main():
                 break
 
             else:
-                print("Numero invalido valor digitar o numero correspodente a opção desejada") 
+                print("Numero invalido valor digitar o numero correspodente a opção desejada.") 
         except Exception as e:
             error = validar_erro(e)
             print(f"escolhas: {error}")
