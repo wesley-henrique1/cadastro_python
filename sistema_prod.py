@@ -32,6 +32,7 @@ def obter_valor(prompt, tipo_dado):
         except Exception as e:
             error = validar_erro(e)
             print(f"AUXILIAR OBTER DADOS: {error}\n")
+
 def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     end = str(rua) + "-" + str(pr) + "-" + str(nvl) + "-" + str(apto)
     end_existe = [produto['ENDERECO'] for produto in base_dados]
@@ -53,24 +54,38 @@ def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
         "ENDERECO": end,
         "PRECO": vl
     }
-    print("\nCadastro finalizado!!!")   
-    print("produto cadastrado:")
-    print(f"{cod}-{desc}")
-    print(f"Endereço: {end}")
-    print(f"fator de converção: {fator}, embalagem: {emb}, preço pra venda: R$ {vl:.2f}, \n") 
+    print("\nCadastro finalizado!!!")  
+    print("produto cadastrado:") 
+
+    print("-" * 87)
+    print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
+    print(
+        f"{cod:<7}",
+        f"{desc:<35}",
+        f"{fator:<8}",
+        f"{emb:<12}"
+        f"{end:<15}",
+        f"R$ {vl:<10.2f}\n"
+    )
+    print("-" * 87)
+
+
+    print("-" * 87)
+    input("Precione 'enter' para continuar...")
+    print("-" * 87)
     return base_dados.append(novo_registro)
 def listar():
     try:
         if not base_dados:
             print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
-            print("-" * 84)
+            print("-" * 87)
             print("\nsem produtos cadastrados!!\n")
-            print("-" * 84)
+            print("-" * 87)
             return
         
         print("\nprodutos cadastrados.\n")
         print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
-        print("-" * 84)
+        print("-" * 87)
         for produto in base_dados:
             print(
                 f"{produto['COD']:<7}",
@@ -80,7 +95,11 @@ def listar():
                 f"{produto['ENDERECO']:<15}",
                 f"R$ {produto['PRECO']:<10.2f}\n"
             )
-        print("-" * 84)
+        print("-" * 87)
+
+        print("-" * 87)
+        input("Precione 'enter' para continuar...")
+        print("-" * 87)
     except Exception as e:
         error = validar_erro(e)
         print(f"escolhas: {error}")
@@ -93,7 +112,7 @@ def buscar(procx):
 
                 print("\nprodutos cadastrados.\n")
                 print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
-                print("-" * 84)
+                print("-" * 87)
                 print(
                     f"{produto['COD']:<7}",
                     f"{produto['DESCRICAO']:<35}",
@@ -102,8 +121,13 @@ def buscar(procx):
                     f"{produto['ENDERECO']:<15}",
                     f"R$ {produto['PRECO']:<10.2f}\n"
                 )
-                print("-" * 84)
+                print("-" * 87)
                 break
+
+        print("-" * 87)
+        input("Precione 'enter' para continuar...")
+        print("-" * 87)
+
         if not prod_encotrado:
             print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
     except Exception as e:
@@ -119,50 +143,82 @@ def remover(lista, produto,):
         else:
             print("\nProduto não encotrado...")
             listar()
-
-def menu():
-    print("\nMENU")
-    print("1 - cadastro")
-    print("2 - lista")
-    print("3 - Buscar")
-    print("4 - Remover")
-    print("0 - sair")
-    try:
-        escolha = int(input("Digite o numero da opção desejada: \n"))
-        print("-" * 60)
-        return escolha
-    except Exception as e:
-        error = validar_erro(e)
-        print(f"menu: {error}")
-
-
-def atualizar(procx,escolha):
+    print("-" * 87)
+    input("Precione 'enter' para continuar...")
+    print("-" * 87)
+def atualizar(procx):
     prod_encotrado = False
 
     for produto in base_dados:
         if procx == produto['COD']:
             prod_encotrado = True
             buscar(procx)
-            
+            print("1 - DESCRIÇÃO.\n" \
+                "2 - FATOR.\n" \
+                "3 - EMBALAGEM.\n" \
+                "4 - PREÇO.\n" \
+                "5 - PREÇO.\n" \
+                "6 - VOLTAR PARA O MENU")
+            escolha = int(input("Digite uma das opção acima.\n"))
+
             if escolha == 1:
                 produto['DESCRICAO'] = obter_valor("descrição: ", str)
+                
             elif escolha == 2:
-                pass
+                produto['FATOR'] = obter_valor("fator de converção: ", int)
+
             elif escolha == 3:
-                pass
+                produto['EMBALAGEM'] = obter_valor("Embalagem ex: CX/024/PT, UN/001/UN: ", str)
+
             elif escolha == 4:
-                pass
-            elif escolha == 5: 
-                pass
+                rua = obter_valor("Rua: ", int)
+                pr = obter_valor("Predio: ", int)
+                nvl = obter_valor("Nivel: ", int)
+                apto = obter_valor("Apartamento: ", int)
+
+                end = str(rua) + "-" + str(pr) + "-" + str(nvl) + "-" + str(apto)
+                end_existe = [produto['ENDERECO'] for produto in base_dados]
+
+                if end in end_existe:
+                    print(f"\nERRO: Endereço ja cadastrado.")
+                    return
+                    
+                produto['ENDERECO'] = end
+
+            elif escolha == 5:
+                produto['PRECO'] = obter_valor("Preço para venda: ", float)
+            else:
+                print("Retornando para o menu.\n\n")
+                return
+            
+    print("-" * 87)
+    input("Precione 'enter' para continuar...")
+    print("-" * 87)
 
     if not prod_encotrado:
         print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
-    pass
 
+def menu():
+    print("\n")
+    print(f"{"-" * 16 + "MENU" + "-" * 16:^36}\n",
+          f"{"1 - cadastrar produto":<36}\n",
+          f"{"2 - listagem base de dados":<36}\n",
+          f"{"3 - consulta":<36}\n",
+          f"{"4 - Remover produto":<36}\n",
+          f"{"5 - alterar produto":<36}\n",
+          f"{"0 - sair":<36}")
+   
+    try:
+        escolha = int(input("Digite o numero da opção desejada: \n"))
+        print("-" * 87)
+        return escolha
+    except Exception as e:
+        error = validar_erro(e)
+        print(f"menu: {error}")
 
 # função principal
 def main():
-    print("=" *60 + "sistema" + "=" *60)
+    print("=" *87 + "sistema" + "=" *87)
     print("\nBem vindo ao sistema\n")
 
     while True:
@@ -170,8 +226,7 @@ def main():
         try:
             if escolha == 1:
                 try:
-                    print("#"*120)
-                    print("cadastro de produtos")
+                    print("\n\ncadastro de produtos")
                     print("\nFavor informar os campos abaixo\n")
                     desc = obter_valor("descrição: ", str)
                     fator = obter_valor("fator de converção: ", int)
@@ -191,44 +246,41 @@ def main():
                     print(f"menu-1: {error}\n")
 
             elif escolha == 2:
-                print("\nlista de produtos cadastrados\n")
-                print("-" *120)
+                print("\n\listagem de produtos cadastrados\n")
+                print("-" *87)
                 listar()   
 
             elif escolha == 3:
-                print("\nConsulta de produtos")
-                print("-" * 120)
+                print("\n\nConsulta de produtos")
+                print("-" * 87)
                 procx = int(input("\nDigite codigo do produto: \n"))
                 buscar(procx)
 
             elif escolha == 4:
-                print("\nRemoção de produto")
-                print("-" * 60)
+                print("\n\nRemoção de produto")
+                print("-" * 87)
                 prod = int(input("\nfavor digite o codigo do produto para remoção:\n"))
                 remover(lista= base_dados, produto= prod)
 
             elif escolha == 5:
-                print("\nAlterar cadastros")
-                print("1 - descrição.\n" \
-                        "2 - FATOR.\n" \
-                        "3 - EMBALAGEM.\n" \
-                        "4 - PREÇO.\N" \
-                        "5 - TODOS.")
-                escolha = int(input("Digite uma das opção acima para iniciar a alteração"))
+                print("\n\nAlterar cadastros")
+                procurar = int(input("Informe o codigo do produto para alteração: \n"))
+                atualizar(procurar)
+
             elif escolha == 0:
-                print('\n')
-                print("-" * 60)
-                print("Obrigado por utilizar o sistema")
-                print("-" * 60)
+                print('\n\n')
+                print("-" * 87)
+                print("Obrigado por utilizar o sistema!!!!")
                 print('\n')
                 break
 
             else:
-                print("Numero invalido valor digitar o numero correspodente a opção desejada.") 
+                print("\nNumero invalido valor digitar o numero correspodente a opção desejada.\n") 
         except Exception as e:
             error = validar_erro(e)
             print(f"escolhas: {error}")
             break
 
 if __name__ == "__main__":
-    main()  
+    main()
+    input("Selecione entre para sair...")  
