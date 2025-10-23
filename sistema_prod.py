@@ -6,6 +6,8 @@ base_dados = [
     ]
 
 # função auxiliares
+def divisor_op():
+    return print("-" * 92)
 def validar_erro(e):
     if isinstance(e, TypeError):
         return f"TypeError: Operação inválida. Tentativa de usar tipos de dados incompatíveis. Mensagem original: {e}"
@@ -16,18 +18,22 @@ def validar_erro(e):
 def obter_valor(prompt, tipo_dado):
     while True:
         try:
-            valor_str = input(prompt)
+            valor_str = input(prompt).strip()
             
-            valor_str_limpo = valor_str.replace(".", "")
-            valor_str_limpo = valor_str_limpo.replace(",", ".")
+            if tipo_dado == str:
+                return valor_str.upper()
             
+            if "," in valor_str and "." in valor_str:
+                valor_str = valor_str.replace(".", "")
+                valor_str = valor_str.replace(",", ".")
+
+            elif "," in valor_str and "." not in valor_str:
+                valor_str = valor_str.replace(",", ".")
+
             if tipo_dado == int:
-                return int(float(valor_str_limpo))
+                return int(float(valor_str))
             elif tipo_dado == float:
-                return float(valor_str_limpo)
-            else:
-                valor_str = valor_str.upper()
-                return valor_str
+                return float(valor_str)
                 
         except Exception as e:
             error = validar_erro(e)
@@ -57,35 +63,35 @@ def cadastrar(desc, fator, emb, rua, pr, nvl, apto, vl):
     print("\nCadastro finalizado!!!")  
     print("produto cadastrado:") 
 
-    print("-" * 87)
-    print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
+    divisor_op()
+    print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<12}")
     print(
         f"{cod:<7}",
         f"{desc:<35}",
         f"{fator:<8}",
         f"{emb:<12}"
         f"{end:<15}",
-        f"R$ {vl:<10.2f}\n"
+        f"R$ {vl:<12.2f}\n"
     )
-    print("-" * 87)
+    divisor_op()
 
 
-    print("-" * 87)
+    divisor_op()
     input("Precione 'enter' para continuar...")
-    print("-" * 87)
+    divisor_op()
     return base_dados.append(novo_registro)
 def listar():
     try:
         if not base_dados:
             print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
-            print("-" * 87)
+            divisor_op()
             print("\nsem produtos cadastrados!!\n")
-            print("-" * 87)
+            divisor_op()
             return
         
         print("\nprodutos cadastrados.\n")
         print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
-        print("-" * 87)
+        divisor_op()
         for produto in base_dados:
             print(
                 f"{produto['COD']:<7}",
@@ -95,11 +101,11 @@ def listar():
                 f"{produto['ENDERECO']:<15}",
                 f"R$ {produto['PRECO']:<10.2f}\n"
             )
-        print("-" * 87)
+        divisor_op()
 
-        print("-" * 87)
+        divisor_op()
         input("Precione 'enter' para continuar...")
-        print("-" * 87)
+        divisor_op()
     except Exception as e:
         error = validar_erro(e)
         print(f"escolhas: {error}")
@@ -112,7 +118,7 @@ def buscar(procx):
 
                 print("\nprodutos cadastrados.\n")
                 print(f"{'CÓD':<7} {'DESCRIÇÃO':<35} {'FATOR':<8} {'EMBALAGEM':<12} {'ENDEREÇO':<15} {'PREÇO':<10}")
-                print("-" * 87)
+                divisor_op()
                 print(
                     f"{produto['COD']:<7}",
                     f"{produto['DESCRICAO']:<35}",
@@ -121,12 +127,12 @@ def buscar(procx):
                     f"{produto['ENDERECO']:<15}",
                     f"R$ {produto['PRECO']:<10.2f}\n"
                 )
-                print("-" * 87)
+                divisor_op()
                 break
 
-        print("-" * 87)
+        divisor_op()
         input("Precione 'enter' para continuar...")
-        print("-" * 87)
+        divisor_op()
 
         if not prod_encotrado:
             print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
@@ -134,18 +140,23 @@ def buscar(procx):
         error = validar_erro(e)
         print(f"menu: {error}")
 def remover(lista, produto,):
+    prod_encotrado = False
+
     for i, dic in enumerate(lista):
         if dic['COD'] == produto:
+            prod_encotrado = True
             lista.pop(i)
             print("\nProduto removido com sucesso!")
             listar()
             return  lista
-        else:
-            print("\nProduto não encotrado...")
-            listar()
-    print("-" * 87)
+        
+    if not prod_encotrado:
+        print("\nProduto não encotrado...")
+        listar()
+
+    divisor_op()
     input("Precione 'enter' para continuar...")
-    print("-" * 87)
+    divisor_op()
 def atualizar(procx):
     prod_encotrado = False
 
@@ -191,9 +202,9 @@ def atualizar(procx):
                 print("Retornando para o menu.\n\n")
                 return
             
-    print("-" * 87)
+    divisor_op()
     input("Precione 'enter' para continuar...")
-    print("-" * 87)
+    divisor_op()
 
     if not prod_encotrado:
         print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
@@ -210,7 +221,7 @@ def menu():
    
     try:
         escolha = int(input("Digite o numero da opção desejada: \n"))
-        print("-" * 87)
+        divisor_op()
         return escolha
     except Exception as e:
         error = validar_erro(e)
@@ -218,7 +229,7 @@ def menu():
 
 # função principal
 def main():
-    print("=" *87 + "sistema" + "=" *87)
+    print("=" *42 + "sistema" + "=" *42)
     print("\nBem vindo ao sistema\n")
 
     while True:
@@ -246,19 +257,19 @@ def main():
                     print(f"menu-1: {error}\n")
 
             elif escolha == 2:
-                print("\n\listagem de produtos cadastrados\n")
-                print("-" *87)
+                print("\nlistagem de produtos cadastrados\n")
+                divisor_op()
                 listar()   
 
             elif escolha == 3:
                 print("\n\nConsulta de produtos")
-                print("-" * 87)
+                divisor_op()
                 procx = int(input("\nDigite codigo do produto: \n"))
                 buscar(procx)
 
             elif escolha == 4:
                 print("\n\nRemoção de produto")
-                print("-" * 87)
+                divisor_op()
                 prod = int(input("\nfavor digite o codigo do produto para remoção:\n"))
                 remover(lista= base_dados, produto= prod)
 
@@ -269,7 +280,7 @@ def main():
 
             elif escolha == 0:
                 print('\n\n')
-                print("-" * 87)
+                divisor_op()
                 print("Obrigado por utilizar o sistema!!!!")
                 print('\n')
                 break
