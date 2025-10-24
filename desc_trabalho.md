@@ -1,5 +1,4 @@
 Trabalho de Iniciação à Programação em Python
-Trabalho de Iniciação à Programação em Python
 Tema: Sistema de Cadastro com Funções (tema livre)
 1) Objetivos de aprendizagem
 Praticar entrada e saída de dados (input/print).

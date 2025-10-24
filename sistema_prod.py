@@ -130,12 +130,13 @@ def buscar(procx):
                 divisor_op()
                 break
 
-        divisor_op()
-        input("Precione 'enter' para continuar...")
-        divisor_op()
 
         if not prod_encotrado:
             print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
+
+        divisor_op()
+        input("Precione 'enter' para continuar...")
+        divisor_op()
     except Exception as e:
         error = validar_erro(e)
         print(f"menu: {error}")
@@ -155,8 +156,6 @@ def remover(lista, produto,):
         listar()
 
     divisor_op()
-    input("Precione 'enter' para continuar...")
-    divisor_op()
 def atualizar(procx):
     prod_encotrado = False
 
@@ -164,14 +163,7 @@ def atualizar(procx):
         if procx == produto['COD']:
             prod_encotrado = True
             buscar(procx)
-            print("1 - DESCRIÇÃO.\n" \
-                "2 - FATOR.\n" \
-                "3 - EMBALAGEM.\n" \
-                "4 - PREÇO.\n" \
-                "5 - PREÇO.\n" \
-                "6 - VOLTAR PARA O MENU")
-            escolha = int(input("Digite uma das opção acima.\n"))
-
+            escolha = menu(2)
             if escolha == 1:
                 produto['DESCRICAO'] = obter_valor("descrição: ", str)
                 
@@ -198,31 +190,48 @@ def atualizar(procx):
 
             elif escolha == 5:
                 produto['PRECO'] = obter_valor("Preço para venda: ", float)
-            else:
+            elif escolha == 0:
                 print("Retornando para o menu.\n\n")
                 return
-            
-    divisor_op()
-    input("Precione 'enter' para continuar...")
-    divisor_op()
+            else:
+                print("\nNumero invalido valor digitar o numero correspodente a opção desejada.\n") 
+
 
     if not prod_encotrado:
         print(f"aviso: o codigo {procx} não foi encotrado na base de dados")
 
-def menu():
-    print("\n")
-    print(f"{"-" * 16 + "MENU" + "-" * 16:^36}\n",
-          f"{"1 - cadastrar produto":<36}\n",
-          f"{"2 - listagem base de dados":<36}\n",
-          f"{"3 - consulta":<36}\n",
-          f"{"4 - Remover produto":<36}\n",
-          f"{"5 - alterar produto":<36}\n",
-          f"{"0 - sair":<36}")
-   
+    divisor_op()
+    input("Precione 'enter' para continuar...")
+    divisor_op()
+
+def menu(id):
     try:
-        escolha = int(input("Digite o numero da opção desejada: \n"))
-        divisor_op()
-        return escolha
+        if id == 1:
+            print("\n")
+            print(f"{"-" * 16 + "MENU" + "-" * 16}\n",
+                  f"{"1 - cadastrar produto":<36}\n",
+                  f"{"2 - listagem base de dados":<36}\n",
+                  f"{"3 - consulta":<36}\n",
+                  f"{"4 - Remover produto":<36}\n",
+                  f"{"5 - alterar produto":<36}\n",
+                  f"{"0 - sair":<36}")
+            
+            escolha = int(input("Digite o numero da opção desejada: \n"))
+            divisor_op()
+            return escolha
+        elif id == 2:
+            print("\n")
+            print(f"{"-" * 7 + "OPÇÕES DE ATUALIZAÇÃO" + "-" * 7}\n",
+                  f"{"1 - DESCRIÇÃO.":<36}\n",
+                  f"{"2 - FATOR.":<36}\n",
+                  f"{"3 - EMBALAGEM.":<36}\n",
+                  f"{"4 - ENDEREÇO.":<36}\n",
+                  f"{"5 - PREÇO.":<36}\n",
+                  f"{"0 - VOLTAR PARA O MENU":<36}")
+            
+            escolha = int(input("Digite uma das opção acima.\n"))
+            return escolha
+
     except Exception as e:
         error = validar_erro(e)
         print(f"menu: {error}")
@@ -233,7 +242,7 @@ def main():
     print("\nBem vindo ao sistema\n")
 
     while True:
-        escolha = menu()
+        escolha = menu(1)
         try:
             if escolha == 1:
                 try:
