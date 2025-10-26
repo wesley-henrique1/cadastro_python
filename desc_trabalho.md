@@ -9,7 +9,7 @@ Organizar o código em módulo principal (main) e funções auxiliares.
 2) Descrição geral
 Cada aluno deverá escolher um tema livre e implementar um sistema básico baseado em funções. O tema pode ser, por exemplo:
 Sistema escolar (cadastro de alunos, notas e disciplinas)
-Sistema de supermercado (cadastro de produtos e controle de estoque)
+Sistema de supermercado (cadastro de produtos e controle de estoque) 
 Sistema de biblioteca (cadastro de livros e empréstimos)
 Sistema de oficina (cadastro de veículos e serviços)
 Sistema de clínica (cadastro de pacientes e consultas)
